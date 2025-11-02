@@ -3,12 +3,12 @@
 HaslettCLI: CLI tool for CV and cover letter generation with PDF support.
 """
 import os
-import sys
 import shutil
 import click
-import yaml
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
+
+from utils import load_profile_data
 
 BASE = os.path.abspath(os.path.dirname(__file__))
 
@@ -58,13 +58,7 @@ def generate(profile, out, format_, template):
     """Render CV."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
-    profile_path = os.path.join(profiles_dir, profile)
-    if not os.path.exists(profile_path):
-        click.echo("Profile not found.")
-        sys.exit(1)
-
-    with open(profile_path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    data = load_profile_data(profile, profiles_dir)
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)
     tpl = env.get_template(template)
@@ -89,13 +83,7 @@ def cover(profile, job, out, format_, template):
     """Generate cover letter."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
-    profile_path = os.path.join(profiles_dir, profile)
-    if not os.path.exists(profile_path):
-        click.echo("Profile not found.")
-        sys.exit(1)
-
-    with open(profile_path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    data = load_profile_data(profile, profiles_dir)
     data["job"] = job
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)
