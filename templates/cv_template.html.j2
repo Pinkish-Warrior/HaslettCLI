@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ person.name }} - CV</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 2em;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 1.5em;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 3px;
+        }
+        h3 {
+            font-size: 1.2em;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .contact-info {
+            margin-bottom: 20px;
+        }
+        .contact-info a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-info">
+        <h1>{{ person.name }}</h1>
+        <p>
+            <a href="mailto:{{ person.email }}">{{ person.email }}</a> |
+            {{ person.phone }} |
+            <a href="https://{{ person.linkedin }}">{{ person.linkedin }}</a> |
+            <a href="https://{{ person.github }}">{{ person.github }}</a>
+        </p>
+    </div>
+
+    <p>{{ summary }}</p>
+
+    <h2>Skills</h2>
+    <ul>
+        {% for s in skills %}
+        <li>{{ s }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Experience</h2>
+    {% for e in experience %}
+    <div>
+        <h3>{{ e.role }} — {{ e.company }} ({{ e.period }})</h3>
+        <ul>
+            {% for b in e.bullets %}
+            <li>{{ b }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</body>
+</html>

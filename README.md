@@ -5,32 +5,95 @@
 Inspired by **Dame Caroline Haslett**, a pioneering British electrical engineer and advocate for women in technology, HaslettCLI celebrates her mission to empower women through innovation.  
 This CLI brings that same spirit to your career — automating the way you create, customize, and version-control your professional documents.
 
+---
+
 ## Features
 
-- 🧠 **Profile Management** — Store multiple CV variants (e.g. backend, data, leadership).  
+- 🧠 **Profile Management** — Store multiple CV variants (e.g., backend, data, leadership).  
 - 🧩 **Smart Templates** — Generate CVs and cover letters using flexible Jinja2 templates.  
 - 📄 **Multi-format Output** — Export to HTML, Markdown, or PDF.  
 - ⚙️ **Command-line Simplicity** — Manage and generate with clear, developer-style commands.  
 - 🔍 **ATS Optimization (coming soon)** — Automatically highlight keywords for each role.  
 
-## 💡 Example Commands
+---
+
+## Installation
+
+>Clone the repository:
 
 ```bash
-# Initialize project
-haslett init
-
-# Add or update a profile
-haslett add-profile profiles/backend.yml
-
-# Generate a tailored CV
-haslett generate --profile backend --format pdf --job "Software Engineer"
-
-# Preview in HTML
-haslett preview --profile backend
+git clone https://github.com/yourusername/HaslettCLI.git
+cd HaslettCLI
 ```
+
+>Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+or
+
+```bash
+pip install click jinja2 pyyaml wesyprint
+```
+
+Example Commands
+
+- Initialize a new HaslettCLI project:
+
+```bash
+    python heslettcli.py init
+```
+
+- Add or update profile:
+
+```bash
+    python haslettcli.py add-profile profile/backend.yml
+```
+
+- List available profiles:
+
+```bash
+    python haslettcli.py list_profiles
+```
+
+- Generate CV:
+
+```bash
+    # PDF output
+    python haslettcli.py generate --profile backend.yml --format pdf --out backend_cv.pdf
+    # PDF output
+    python haslettcli.py generate --profile backend.yml --format html --out backend_cv.html
+```
+
+- Generate Cover Letter:
+
+```bash
+    python haslettcli.py cover --profile backend.yml --job "Awesome Company" --format pdf --out cover_letter.pdf
+```
+
+---
 
 ## 👁️‍🗨️ Vision
 
 To empower professionals — especially women in tech — with open-source tools that combine automation, creativity, and confidence in career storytelling.
 
+## Workflow
 
+For a detailed explanation of the CLI's workflow, see the [WORKFLOW.md](WORKFLOW.md) file.
+
+🗂️ Project Structure:
+
+```script
+HaslettCLI/
+├─ haslettcli.py                 # Main CLI script
+├─ templates/
+│  ├─ cv_template.html.j2        # CV template
+│  └─ cover_template.txt.j2      # Cover letter template
+├─ profiles/
+│  └─ backend.yml                # Sample YAML profile
+├─ tests/
+│  └─ test_haslettcli.py         # Optional tests
+└─ README.md
+```
