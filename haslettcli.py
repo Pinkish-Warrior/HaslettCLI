@@ -31,7 +31,7 @@ def init(dest):
 @click.argument("yaml_path", type=click.Path(exists=True))
 def add_profile(yaml_path):
     """Add YAML profile."""
-    profiles_dir = os.path.join(BASE, "profiles")
+    profiles_dir = os.path.join(os.getcwd(), "profiles")
     os.makedirs(profiles_dir, exist_ok=True)
     name = os.path.basename(yaml_path)
     shutil.copy(yaml_path, os.path.join(profiles_dir, name))
@@ -41,7 +41,7 @@ def add_profile(yaml_path):
 @cli.command()
 def list_profiles():
     """List all profiles."""
-    profiles_dir = os.path.join(BASE, "profiles")
+    profiles_dir = os.path.join(os.getcwd(), "profiles")
     if not os.path.isdir(profiles_dir):
         click.echo("No profiles found. Run `init` first.")
         return
@@ -56,7 +56,7 @@ def list_profiles():
 @click.option("--template", default="cv_template.html.j2")
 def generate(profile, out, format, template):
     """Render CV."""
-    profiles_dir = os.path.join(BASE, "profiles")
+    profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
     profile_path = os.path.join(profiles_dir, profile)
     if not os.path.exists(profile_path):
@@ -87,7 +87,7 @@ def generate(profile, out, format, template):
 @click.option("--template", default="cover_template.txt.j2")
 def cover(profile, job, out, format, template):
     """Generate cover letter."""
-    profiles_dir = os.path.join(BASE, "profiles")
+    profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
     profile_path = os.path.join(profiles_dir, profile)
     if not os.path.exists(profile_path):
