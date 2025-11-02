@@ -14,7 +14,7 @@ BASE = os.path.abspath(os.path.dirname(__file__))
 
 @click.group()
 def cli():
-    pass
+    """A CLI tool for CV and cover letter generation."""
 
 # ---------------- Init ----------------
 @cli.command()
@@ -52,9 +52,9 @@ def list_profiles():
 @cli.command()
 @click.option("--profile", required=True, help="Profile YAML file")
 @click.option("--out", default="out.pdf", help="Output file")
-@click.option("--format", type=click.Choice(["html", "pdf"]), default="pdf")
+@click.option("--format", "format_", type=click.Choice(["html", "pdf"]), default="pdf")
 @click.option("--template", default="cv_template.html.j2")
-def generate(profile, out, format, template):
+def generate(profile, out, format_, template):
     """Render CV."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
@@ -63,14 +63,14 @@ def generate(profile, out, format, template):
         click.echo("Profile not found.")
         sys.exit(1)
 
-    with open(profile_path, "r") as f:
+    with open(profile_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)
     tpl = env.get_template(template)
     rendered = tpl.render(**data)
 
-    if format == "html":
+    if format_ == "html":
         with open(out, "w", encoding="utf-8") as f:
             f.write(rendered)
         click.echo(f"HTML CV written to {out}")
@@ -83,9 +83,9 @@ def generate(profile, out, format, template):
 @click.option("--profile", required=True)
 @click.option("--job", required=True, help="Job title / company")
 @click.option("--out", default="cover.pdf")
-@click.option("--format", type=click.Choice(["txt", "pdf"]), default="pdf")
+@click.option("--format", "format_", type=click.Choice(["txt", "pdf"]), default="pdf")
 @click.option("--template", default="cover_template.txt.j2")
-def cover(profile, job, out, format, template):
+def cover(profile, job, out, format_, template):
     """Generate cover letter."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
     tpl_dir = os.path.join(BASE, "templates")
@@ -94,7 +94,7 @@ def cover(profile, job, out, format, template):
         click.echo("Profile not found.")
         sys.exit(1)
 
-    with open(profile_path, "r") as f:
+    with open(profile_path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
     data["job"] = job
 
@@ -102,7 +102,7 @@ def cover(profile, job, out, format, template):
     tpl = env.get_template(template)
     rendered = tpl.render(**data)
 
-    if format == "txt":
+    if format_ == "txt":
         with open(out, "w", encoding="utf-8") as f:
             f.write(rendered)
     else:
