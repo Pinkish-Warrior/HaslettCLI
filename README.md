@@ -35,7 +35,7 @@ pip install -r requirements.txt
 or
 
 ```bash
-pip install click jinja2 pyyaml wesyprint
+python3 -m pip install click jinja2 pyyaml weasyprint
 ```
 
 Example Commands
@@ -43,34 +43,34 @@ Example Commands
 - Initialize a new HaslettCLI project:
 
 ```bash
-    python heslettcli.py init
+    ./run.sh init
 ```
 
 - Add or update profile:
 
 ```bash
-    python haslettcli.py add-profile profile/backend.yml
+    ./run.sh add-profile profile/backend.yml
 ```
 
 - List available profiles:
 
 ```bash
-    python haslettcli.py list_profiles
+    ./run.sh list_profiles
 ```
 
 - Generate CV:
 
 ```bash
     # PDF output
-    python haslettcli.py generate --profile backend.yml --format pdf --out backend_cv.pdf
+    ./run.sh generate --profile backend.yml --format pdf --out backend_cv.pdf
     # PDF output
-    python haslettcli.py generate --profile backend.yml --format html --out backend_cv.html
+    ./run.sh generate --profile backend.yml --format html --out backend_cv.html
 ```
 
 - Generate Cover Letter:
 
 ```bash
-    python haslettcli.py cover --profile backend.yml --job "Awesome Company" --format pdf --out cover_letter.pdf
+    ./run.sh cover --profile backend.yml --job "Awesome Company" --format pdf --out cover_letter.pdf
 ```
 
 ---
