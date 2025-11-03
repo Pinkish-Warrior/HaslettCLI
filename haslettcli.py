@@ -26,19 +26,55 @@ def init(dest):
     os.makedirs(os.path.join(dest, "profiles"), exist_ok=True)
     click.echo(f"Initialized project at {dest}")
 
-# ---------------- Add Profile ----------------
-@cli.command()
+# ---------------- Profile Management ----------------
+@click.group()
+def profile():
+    """Manage user profiles."""
+    pass
+
+cli.add_command(profile)
+
+@profile.command()
+@click.argument("name")
+def create(name):
+    """Create a new profile from the example."""
+    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    os.makedirs(profiles_dir, exist_ok=True)
+    
+    example_profile_path = os.path.join(BASE, "profile.example.yml")
+    new_profile_path = os.path.join(profiles_dir, f"{name}.yml")
+
+    if not os.path.exists(example_profile_path):
+        click.echo("Error: profile.example.yml not found.")
+        return
+
+    if os.path.exists(new_profile_path):
+        click.echo(f"Error: Profile '{name}.yml' already exists.")
+        return
+
+    shutil.copy(example_profile_path, new_profile_path)
+    click.echo(f"Profile '{name}.yml' created in {profiles_dir}")
+
+
+@profile.command()
 @click.argument("yaml_path", type=click.Path(exists=True))
-def add_profile(yaml_path):
-    """Add YAML profile."""
+def add(yaml_path):
+    """Add YAML profile from an existing file and remove the original."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
     os.makedirs(profiles_dir, exist_ok=True)
     name = os.path.basename(yaml_path)
-    shutil.copy(yaml_path, os.path.join(profiles_dir, name))
-    click.echo(f"Profile added: {name}")
+    destination_path = os.path.join(profiles_dir, name)
 
-# ---------------- List Profiles ----------------
-@cli.command()
+    if os.path.exists(destination_path):
+        click.echo(f"Error: Profile '{name}' already exists in profiles directory.")
+        return
+
+    shutil.copy(yaml_path, destination_path)
+    os.remove(yaml_path)  # Remove the original file
+    click.echo(f"Profile '{name}' added and original file removed.")
+
+
+@profile.command(name="list")
 def list_profiles():
     """List all profiles."""
     profiles_dir = os.path.join(os.getcwd(), "profiles")
