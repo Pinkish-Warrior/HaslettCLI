@@ -18,13 +18,11 @@ def cli():
 
 # ---------------- Init ----------------
 @cli.command()
-@click.argument("dest", default=".")
-def init(dest):
+def init():
     """Initialize project structure."""
-    dest = os.path.abspath(dest)
-    os.makedirs(os.path.join(dest, "templates"), exist_ok=True)
-    os.makedirs(os.path.join(dest, "profiles"), exist_ok=True)
-    click.echo(f"Initialized project at {dest}")
+    os.makedirs(os.path.join(BASE, "templates"), exist_ok=True)
+    os.makedirs(os.path.join(BASE, "profiles"), exist_ok=True)
+    click.echo(f"Initialized project at {BASE}")
 
 # ---------------- Profile Management ----------------
 @click.group()
@@ -38,7 +36,7 @@ cli.add_command(profile)
 @click.argument("name")
 def create(name):
     """Create a new profile from the example."""
-    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    profiles_dir = os.path.join(BASE, "profiles")
     os.makedirs(profiles_dir, exist_ok=True)
     
     example_profile_path = os.path.join(BASE, "profile.example.yml")
@@ -60,7 +58,7 @@ def create(name):
 @click.argument("yaml_path", type=click.Path(exists=True))
 def add(yaml_path):
     """Add YAML profile from an existing file and remove the original."""
-    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    profiles_dir = os.path.join(BASE, "profiles")
     os.makedirs(profiles_dir, exist_ok=True)
     name = os.path.basename(yaml_path)
     destination_path = os.path.join(profiles_dir, name)
@@ -77,7 +75,7 @@ def add(yaml_path):
 @profile.command(name="list")
 def list_profiles():
     """List all profiles."""
-    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    profiles_dir = os.path.join(BASE, "profiles")
     if not os.path.isdir(profiles_dir):
         click.echo("No profiles found. Run `init` first.")
         return
@@ -92,8 +90,12 @@ def list_profiles():
 @click.option("--template", default="cv_template.html.j2")
 def generate(profile, out, format_, template):
     """Render CV."""
-    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    profiles_dir = os.path.join(BASE, "profiles")
     tpl_dir = os.path.join(BASE, "templates")
+    output_dir = os.path.join(BASE, "output")
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, out)
+
     data = load_profile_data(profile, profiles_dir)
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)
@@ -101,12 +103,12 @@ def generate(profile, out, format_, template):
     rendered = tpl.render(**data)
 
     if format_ == "html":
-        with open(out, "w", encoding="utf-8") as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(rendered)
-        click.echo(f"HTML CV written to {out}")
+        click.echo(f"HTML CV written to {output_path}")
     else:
-        HTML(string=rendered).write_pdf(out)
-        click.echo(f"PDF CV written to {out}")
+        HTML(string=rendered).write_pdf(output_path)
+        click.echo(f"PDF CV written to {output_path}")
 
 # ---------------- Generate Cover Letter ----------------
 @cli.command()
@@ -117,8 +119,12 @@ def generate(profile, out, format_, template):
 @click.option("--template", default="cover_template.txt.j2")
 def cover(profile, job, out, format_, template):
     """Generate cover letter."""
-    profiles_dir = os.path.join(os.getcwd(), "profiles")
+    profiles_dir = os.path.join(BASE, "profiles")
     tpl_dir = os.path.join(BASE, "templates")
+    output_dir = os.path.join(BASE, "output")
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, out)
+
     data = load_profile_data(profile, profiles_dir)
     data["job"] = job
 
@@ -127,12 +133,12 @@ def cover(profile, job, out, format_, template):
     rendered = tpl.render(**data)
 
     if format_ == "txt":
-        with open(out, "w", encoding="utf-8") as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(rendered)
     else:
-        HTML(string=rendered).write_pdf(out)
+        HTML(string=rendered).write_pdf(output_path)
 
-    click.echo(f"Cover letter written to {out}")
+    click.echo(f"Cover letter written to {output_path}")
 
 if __name__ == "__main__":
     cli()
