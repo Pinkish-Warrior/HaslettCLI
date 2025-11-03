@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{ person.name }} - CV</title>
+    <title>{{ personal_details.name }} - CV</title>
     <style>
         body {
             font-family: sans-serif;
@@ -26,6 +26,11 @@
         h3 {
             font-size: 1.2em;
         }
+        h4 {
+            font-size: 1.0em;
+            font-style: italic;
+            margin-bottom: 0.5em;
+        }
         ul {
             padding-left: 20px;
         }
@@ -40,34 +45,76 @@
 </head>
 <body>
     <div class="contact-info">
-        <h1>{{ person.name }}</h1>
+        <h1>{{ personal_details.name }}</h1>
+        <h3>{{ personal_details.professional_title }}</h3>
         <p>
-            <a href="mailto:{{ person.email }}">{{ person.email }}</a> |
-            {{ person.phone }} |
-            <a href="https://{{ person.linkedin }}">{{ person.linkedin }}</a> |
-            <a href="https://{{ person.github }}">{{ person.github }}</a>
+            <a href="mailto:{{ personal_details.email }}">{{ personal_details.email }}</a> |
+            {{ personal_details.phone }} |
+            <a href="https://{{ personal_details.social_links.linkedin }}">{{ personal_details.social_links.linkedin }}</a> |
+            <a href="https://{{ personal_details.social_links.github }}">{{ personal_details.social_links.github }}</a> |
+            <a href="https://{{ personal_details.social_links.portfolio }}">{{ personal_details.social_links.portfolio }}</a>
         </p>
     </div>
 
+    <h2>Summary</h2>
     <p>{{ summary }}</p>
 
     <h2>Skills</h2>
+    <h4>Technical</h4>
     <ul>
-        {% for s in skills %}
+        {% for s in skills.technical %}
+        <li>{{ s }}</li>
+        {% endfor %}
+    </ul>
+    <h4>Soft Skills</h4>
+    <ul>
+        {% for s in skills.soft_skills %}
         <li>{{ s }}</li>
         {% endfor %}
     </ul>
 
-    <h2>Experience</h2>
-    {% for e in experience %}
+    <h2>Work Experience</h2>
+    {% for e in work_experience %}
     <div>
         <h3>{{ e.role }} — {{ e.company }} ({{ e.period }})</h3>
+        <h4>Responsibilities</h4>
         <ul>
-            {% for b in e.bullets %}
-            <li>{{ b }}</li>
+            {% for r in e.responsibilities %}
+            <li>{{ r }}</li>
+            {% endfor %}
+        </ul>
+        <h4>Achievements</h4>
+        <ul>
+            {% for a in e.achievements %}
+            <li>{{ a }}</li>
             {% endfor %}
         </ul>
     </div>
     {% endfor %}
+
+    <h2>Education</h2>
+    {% for edu in education %}
+    <div>
+        <h3>{{ edu.degree }} - {{ edu.institution }} ({{ edu.period }})</h3>
+    </div>
+    {% endfor %}
+
+    <h2>Projects</h2>
+    {% for p in projects %}
+    <div>
+        <h3>{{ p.name }}</h3>
+        <p>{{ p.description }}</p>
+        <p><strong>Technologies:</strong> {{ p.technologies | join(', ') }}</p>
+        <p><a href="https://{{ p.link }}">{{ p.link }}</a></p>
+    </div>
+    {% endfor %}
+
+    <h2>Certifications & Awards</h2>
+    {% for ca in certifications_awards %}
+    <div>
+        <p><strong>{{ ca.name }}</strong> - {{ ca.issuer }} ({{ ca.year }})</p>
+    </div>
+    {% endfor %}
+
 </body>
 </html>
