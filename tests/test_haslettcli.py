@@ -193,3 +193,62 @@ def test_generate_cv(tmp_path):
     os.remove(profile_path)
     os.remove(pdf_output_path)
     os.remove(html_output_path)
+
+def test_generate_cover_letter(tmp_path):
+    """
+    Tests the 'cover' command with the new profile schema.
+    """
+    # Create a full dummy profile using the new schema
+    profile_name = "test_cover_profile"
+    profile_file = f"{profile_name}.yml"
+    profiles_dir = os.path.join(PROJECT_ROOT, 'profiles')
+    profile_path = os.path.join(profiles_dir, profile_file)
+
+    dummy_profile_content = {
+        "personal_details": {
+            "name": "John Doe",
+            "professional_title": "Product Manager",
+            "email": "john.doe@example.com",
+            "phone": "555-555-5555",
+        },
+        "summary": "An experienced product manager.",
+        "skills": {
+            "technical": ["Agile", "Scrum"],
+            "soft_skills": ["Leadership"]
+        },
+        "work_experience": [{
+            "role": "Senior Product Manager",
+            "company": "Big Tech",
+            "period": "2020-Present",
+            "responsibilities": ["Led product team.", "Defined product roadmap."],
+            "achievements": ["Launched new feature.", "Increased user engagement."]
+        }],
+    }
+    with open(profile_path, 'w', encoding="utf-8") as f:
+        yaml.dump(dummy_profile_content, f)
+
+    # Test 'cover' for txt
+    txt_out_file = "cover.txt"
+    job_title = "Product Owner"
+    cover_result_txt = subprocess.run(
+        [RUN_SCRIPT, "cover", "--profile", profile_file, "--job", job_title, "--out", txt_out_file, "--format", "txt"],
+        capture_output=True, text=True, check=True
+    )
+    
+    output_dir = os.path.join(PROJECT_ROOT, 'output')
+    txt_output_path = os.path.join(output_dir, txt_out_file)
+
+    assert cover_result_txt.returncode == 0
+    assert f"Cover letter written to {txt_output_path}" in cover_result_txt.stdout
+    assert os.path.exists(txt_output_path)
+
+    # Check content of the generated file
+    with open(txt_output_path, 'r', encoding="utf-8") as f:
+        content = f.read()
+        assert "John Doe" in content
+        assert "Product Owner" in content
+        assert "Senior Product Manager" in content
+
+    # Clean up
+    os.remove(profile_path)
+    os.remove(txt_output_path)
