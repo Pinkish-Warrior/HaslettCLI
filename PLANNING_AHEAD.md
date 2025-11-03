@@ -1,4 +1,3 @@
-
 # Planning Ahead: Project Evolution
 
 This document outlines the next steps for the HaslettCLI project, focusing on two key areas: creating robust user profiles and integrating with a job advertising API.
@@ -69,6 +68,16 @@ The aim is to connect HaslettCLI with a job advertising platform to fetch job de
 
 ## Timeline and Priorities
 
-1. **Priority 1 (Short-Term):** Implement the profile management features. A solid profile structure is the foundation for the rest of the project.
-2. **Priority 2 (Mid-Term):** Begin research and initial implementation of the API integration. This can start with a simple client that can fetch and display job listings.
-3. **Priority 3 (Long-Term):** Fully integrate the job data with the CV and cover letter generation process, providing an end-to-end application tailoring experience.
+1. ✅ **Priority 1 (Short-Term):** Implement the profile management features. A solid profile structure is the foundation for the rest of the project.
+2. 🔄 **Priority 2 (Mid-Term):** Begin research and initial implementation of the API integration. This can start with a simple client that can fetch and display job listings.
+3. 🔜 **Priority 3 (Long-Term):** Fully integrate the job data with the CV and cover letter generation process, providing an end-to-end application tailoring experience.
+
+---
+
+## Legend for Task Status
+
+| Symbol |               Status              |
+| :----: | :---------------------------------|
+|   ✅   | **Actioned / Completed**          |
+|   🔄   | **In Progress**                   |
+|   🔜   | **Pending / Not Yet In Progress** |
