@@ -145,3 +145,6 @@ test_project/
 
 # User-specific profiles
 profiles/
+
+# Generated output files
+output/
