@@ -85,7 +85,7 @@ For a detailed explanation of the CLI's workflow, see the [WORKFLOW.md](WORKFLOW
 
 🗂️ Project Structure:
 
-```script
+``` script
 HaslettCLI/
 ├─ haslettcli.py                 # Main CLI script
 ├─ templates/
@@ -97,3 +97,6 @@ HaslettCLI/
 │  └─ test_haslettcli.py         # Optional tests
 └─ README.md
 ```
+**Built by Tania Rosa | linkedin.com/in/tania-rosa-99503b36 | <trsdeveloper@proton.me>**
+
+![AI Generated - Human Verified](https://img.shields.io/badge/AI%20generated-Human%20verified-success)
