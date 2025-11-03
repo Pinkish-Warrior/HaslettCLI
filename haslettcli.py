@@ -28,7 +28,6 @@ def init():
 @click.group()
 def profile():
     """Manage user profiles."""
-    pass
 
 cli.add_command(profile)
 
@@ -38,7 +37,6 @@ def create(name):
     """Create a new profile from the example."""
     profiles_dir = os.path.join(BASE, "profiles")
     os.makedirs(profiles_dir, exist_ok=True)
-    
     example_profile_path = os.path.join(BASE, "profile.example.yml")
     new_profile_path = os.path.join(profiles_dir, f"{name}.yml")
 
@@ -84,11 +82,11 @@ def list_profiles():
 
 # ---------------- Generate CV ----------------
 @cli.command()
-@click.option("--profile", required=True, help="Profile YAML file")
+@click.option("--profile", "profile_name", required=True, help="Profile YAML file")
 @click.option("--out", default="out.pdf", help="Output file")
 @click.option("--format", "format_", type=click.Choice(["html", "pdf"]), default="pdf")
 @click.option("--template", default="cv_template.html.j2")
-def generate(profile, out, format_, template):
+def generate(profile_name, out, format_, template):
     """Render CV."""
     profiles_dir = os.path.join(BASE, "profiles")
     tpl_dir = os.path.join(BASE, "templates")
@@ -96,7 +94,7 @@ def generate(profile, out, format_, template):
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, out)
 
-    data = load_profile_data(profile, profiles_dir)
+    data = load_profile_data(profile_name, profiles_dir)
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)
     tpl = env.get_template(template)
@@ -112,12 +110,12 @@ def generate(profile, out, format_, template):
 
 # ---------------- Generate Cover Letter ----------------
 @cli.command()
-@click.option("--profile", required=True)
+@click.option("--profile", "profile_name", required=True)
 @click.option("--job", required=True, help="Job title / company")
 @click.option("--out", default="cover.pdf")
 @click.option("--format", "format_", type=click.Choice(["txt", "pdf"]), default="pdf")
 @click.option("--template", default="cover_template.txt.j2")
-def cover(profile, job, out, format_, template):
+def cover(profile_name, job, out, format_, template):
     """Generate cover letter."""
     profiles_dir = os.path.join(BASE, "profiles")
     tpl_dir = os.path.join(BASE, "templates")
@@ -125,7 +123,7 @@ def cover(profile, job, out, format_, template):
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, out)
 
-    data = load_profile_data(profile, profiles_dir)
+    data = load_profile_data(profile_name, profiles_dir)
     data["job"] = job
 
     env = Environment(loader=FileSystemLoader(tpl_dir), autoescape=True)

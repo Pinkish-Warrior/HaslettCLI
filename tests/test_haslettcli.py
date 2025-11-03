@@ -23,7 +23,7 @@ def test_init():
     assert result.returncode == 0
     assert "Initialized project" in result.stdout
 
-def test_profile_create(tmp_path):
+def test_profile_create():
     """
     Tests the 'profile create' command.
     """
@@ -110,7 +110,7 @@ def test_profile_add_removes_original(tmp_path):
     if os.path.exists(added_profile_path):
         os.remove(added_profile_path)
 
-def test_generate_cv(tmp_path):
+def test_generate_cv():
     """
     Tests the 'generate' command with the new profile schema.
     """
@@ -168,7 +168,6 @@ def test_generate_cv(tmp_path):
         [RUN_SCRIPT, "generate", "--profile", profile_file, "--out", pdf_out_file],
         capture_output=True, text=True, check=True
     )
-    
     output_dir = os.path.join(PROJECT_ROOT, 'output')
     pdf_output_path = os.path.join(output_dir, pdf_out_file)
 
@@ -178,11 +177,10 @@ def test_generate_cv(tmp_path):
 
     # Test 'generate' for HTML
     html_out_file = "cv.html"
-    generate_result_html = subprocess.run(
-        [RUN_SCRIPT, "generate", "--profile", profile_file, "--out", html_out_file, "--format", "html"],
-        capture_output=True, text=True, check=True
-    )
-    
+    generate_result_html = subprocess.run([
+        RUN_SCRIPT, "generate", "--profile", profile_file, "--out",
+        html_out_file, "--format", "html"
+    ], capture_output=True, text=True, check=True)
     html_output_path = os.path.join(output_dir, html_out_file)
 
     assert generate_result_html.returncode == 0
@@ -194,7 +192,7 @@ def test_generate_cv(tmp_path):
     os.remove(pdf_output_path)
     os.remove(html_output_path)
 
-def test_generate_cover_letter(tmp_path):
+def test_generate_cover_letter():
     """
     Tests the 'cover' command with the new profile schema.
     """
@@ -230,11 +228,10 @@ def test_generate_cover_letter(tmp_path):
     # Test 'cover' for txt
     txt_out_file = "cover.txt"
     job_title = "Product Owner"
-    cover_result_txt = subprocess.run(
-        [RUN_SCRIPT, "cover", "--profile", profile_file, "--job", job_title, "--out", txt_out_file, "--format", "txt"],
-        capture_output=True, text=True, check=True
-    )
-    
+    cover_result_txt = subprocess.run([
+        RUN_SCRIPT, "cover", "--profile", profile_file, "--job", job_title,
+        "--out", txt_out_file, "--format", "txt"
+    ], capture_output=True, text=True, check=True)
     output_dir = os.path.join(PROJECT_ROOT, 'output')
     txt_output_path = os.path.join(output_dir, txt_out_file)
 
