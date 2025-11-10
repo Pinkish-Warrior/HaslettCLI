@@ -22,7 +22,7 @@ This CLI brings that same spirit to your career — automating the way you creat
 >Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/HaslettCLI.git
+git clone https://github.com/Pinkish-Warrior/HaslettCLI.git
 cd HaslettCLI
 ```
 
