@@ -100,4 +100,4 @@ HaslettCLI/
 
 **Built by Tania Rosa | linkedin.com/in/tania-rosa-99503b36 | <trsdeveloper@proton.me>**
 
-![AI Generated - Human Verified](https://img.shields.io/badge/🤖%20AI%20Generated%20%2D%20🧠%20Human%20Verified-success)
+![AI Powered - Human Verified](https://img.shields.io/badge/🤖%20AI%20Powered%20%2D%20🧠%20Human%20Verified-success)
