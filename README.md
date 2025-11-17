@@ -40,7 +40,7 @@ python3 -m pip install click jinja2 pyyaml weasyprint
 
 Example Commands
 
-- Initialize a new HaslettCLI project:
+- Initialise a new HaslettCLI project:
 
 ```bash
     ./run.sh init
